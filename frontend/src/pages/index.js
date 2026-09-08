@@ -14,3 +14,5 @@ export * from './products';
 export * from './properties';
 export * from './services';
 export * from './vehicles';
+export * from './legal';
+export * from './support';

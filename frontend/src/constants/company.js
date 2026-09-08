@@ -7,9 +7,10 @@ export const COMPANY = {
   logo: logoImage || '/velvorax-logo.png',
   description: 'Velvorax is a global marketplace for everything that matters. Buy, sell, rent, and discover properties, vehicles, products, jobs, services, and local businesses in one seamless platform.',
   contact: {
-    email: 'support@velvorax.com',
-    phone: '+1 (800) 555-8888',
-    address: 'Global Operations Center',
+    email: 'raraju@velvorax.tech',
+    phone: '+91 9985201116',
+    address: "Flat 303, Sri Mani Sai Arcade, 'X' Road, Miyapur, Hyderabad, Telangana - 500049",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Flat+303,+Sri+Mani+Sai+Arcade,+X+Road,+Miyapur,+Hyderabad,+Telangana+500049",
   },
   social: {
     twitter: 'https://twitter.com/velvorax',

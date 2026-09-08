@@ -30,6 +30,11 @@ export const ROUTES = {
   // Corporate & Static
   ABOUT: '/about',
   CONTACT: '/contact',
+  HELP: '/contact',
+  SAFETY: '/safety',
+  TERMS: '/terms',
+  PRIVACY: '/privacy',
+  COOKIES: '/cookies',
   FAQ: '/faq',
   BLOG: '/blog',
   CAREERS: '/careers',

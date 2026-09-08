@@ -10,6 +10,7 @@ import { COMPANY } from '../../../constants/company';
 export function Footer({
   brandName = COMPANY.name,
   description = COMPANY.description,
+  contact = COMPANY.contact,
   sections = [
     {
       title: 'Marketplace Sectors',
@@ -46,10 +47,10 @@ export function Footer({
     {
       title: 'Trust & Security',
       links: [
-        { label: 'Safety Guidelines', href: ROUTES.HOME },
-        { label: 'Help & Contact Support', href: ROUTES.HOME },
-        { label: 'Terms of Service', href: ROUTES.HOME },
-        { label: 'Privacy Policy', href: ROUTES.HOME },
+        { label: 'Safety Guidelines', href: ROUTES.SAFETY },
+        { label: 'Help & Contact Support', href: ROUTES.CONTACT },
+        { label: 'Terms of Service', href: ROUTES.TERMS },
+        { label: 'Privacy Policy', href: ROUTES.PRIVACY },
       ],
     },
   ],
@@ -80,6 +81,48 @@ export function Footer({
               <p className="text-[15px] text-[var(--text-secondary)] max-w-sm mt-1 leading-relaxed">
                 {description || 'The premier global marketplace for buying, selling, renting, and discovering local opportunities across all categories.'}
               </p>
+
+              {/* Contact Information (footerContact) */}
+              <div id="footerContact" className="footerContact flex flex-col gap-2.5 pt-1 text-sm text-[var(--text-secondary)]">
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="inline-flex items-center gap-2.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors group"
+                >
+                  <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-primary)] text-[var(--text-primary)] group-hover:border-[var(--accent)] group-hover:text-[var(--accent)] transition-colors shrink-0 shadow-2xs">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </span>
+                  <span className="font-medium hover:underline break-all">{contact.email}</span>
+                </a>
+
+                <a
+                  href={`tel:${contact.phone.replace(/\s+/g, '')}`}
+                  className="inline-flex items-center gap-2.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors group"
+                >
+                  <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-primary)] text-[var(--text-primary)] group-hover:border-[var(--accent)] group-hover:text-[var(--accent)] transition-colors shrink-0 shadow-2xs">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </span>
+                  <span className="font-medium hover:underline">{contact.phone}</span>
+                </a>
+
+                <a
+                  href={contact.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-start gap-2.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors group leading-snug"
+                >
+                  <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-primary)] text-[var(--text-primary)] group-hover:border-[var(--accent)] group-hover:text-[var(--accent)] transition-colors shrink-0 mt-0.5 shadow-2xs">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </span>
+                  <span className="font-medium hover:underline text-[13px]">{contact.address}</span>
+                </a>
+              </div>
               
               <div className="pt-2 flex items-center gap-3 text-xs text-[var(--text-muted)]">
                 <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--bg-surface)] text-[var(--text-primary)] font-bold border border-[var(--border-primary)] shadow-2xs">
@@ -116,13 +159,13 @@ export function Footer({
               {copyright || `© ${currentYear} ${brandName}. All rights reserved.`}
             </p>
             <div className="flex items-center space-x-6">
-              <Link to={ROUTES.HOME} className="hover:text-[var(--text-primary)] transition-colors">
+              <Link to={ROUTES.PRIVACY} className="hover:text-[var(--text-primary)] transition-colors">
                 Privacy Policy
               </Link>
-              <Link to={ROUTES.HOME} className="hover:text-[var(--text-primary)] transition-colors">
+              <Link to={ROUTES.TERMS} className="hover:text-[var(--text-primary)] transition-colors">
                 Terms of Service
               </Link>
-              <Link to={ROUTES.HOME} className="hover:text-[var(--text-primary)] transition-colors">
+              <Link to={ROUTES.COOKIES} className="hover:text-[var(--text-primary)] transition-colors">
                 Cookie Preferences
               </Link>
             </div>

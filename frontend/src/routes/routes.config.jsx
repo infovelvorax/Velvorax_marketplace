@@ -46,7 +46,12 @@ import {
   BuyerDashboard,
   BuyerPurchases,
   BuyerContacts,
-  BuyerSaved
+  BuyerSaved,
+  SafetyGuidelines,
+  TermsOfService,
+  PrivacyPolicy,
+  CookiePolicy,
+  ContactUs
 } from '../pages';
 import { ROUTES } from '../constants';
 import { ProtectedRoute, GuestRoute } from '../components/common';
@@ -147,6 +152,42 @@ export const routesConfig = [
     element: <ListingDetails />,
     layout: 'main',
     title: 'Listing Details',
+  },
+  {
+    path: ROUTES.SAFETY,
+    element: <SafetyGuidelines />,
+    layout: 'main',
+    title: 'Safety Guidelines',
+  },
+  {
+    path: ROUTES.TERMS,
+    element: <TermsOfService />,
+    layout: 'main',
+    title: 'Terms of Service',
+  },
+  {
+    path: ROUTES.PRIVACY,
+    element: <PrivacyPolicy />,
+    layout: 'main',
+    title: 'Privacy Policy',
+  },
+  {
+    path: ROUTES.COOKIES,
+    element: <CookiePolicy />,
+    layout: 'main',
+    title: 'Cookie Preferences',
+  },
+  {
+    path: ROUTES.CONTACT,
+    element: <ContactUs />,
+    layout: 'main',
+    title: 'Help & Contact Support',
+  },
+  {
+    path: '/help',
+    element: <ContactUs />,
+    layout: 'main',
+    title: 'Help & Contact Support',
   },
   {
     path: ROUTES.UNAUTHORIZED,
@@ -694,8 +735,8 @@ export const routesConfig = [
   {
     path: '/dashboard/my-listings',
     element: (
-      <ProtectedRoute allowedRoles={['SELLER', 'ADMIN']}>
-        <SellerListings />
+      <ProtectedRoute>
+        <MyListings />
       </ProtectedRoute>
     ),
     layout: 'dashboard',
