@@ -1,0 +1,63 @@
+/* Admin Secret Gateway & 2FA Modal Styles */
+.admin-modal-backdrop {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.admin-glass-card {
+  background: rgba(18, 20, 29, 0.95);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 35px rgba(99, 102, 241, 0.15);
+}
+
+:root:not(.dark) .admin-glass-card {
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 35px rgba(99, 102, 241, 0.1);
+}
+
+.pin-digit-box {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pin-digit-box.filled {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.12);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
+}
+
+.pin-keypad-btn {
+  transition: all 0.15s ease-in-out;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+.pin-keypad-btn:hover {
+  background: var(--bg-surface-hover, rgba(99, 102, 241, 0.15));
+  border-color: #6366f1;
+  transform: translateY(-1px);
+}
+
+.pin-keypad-btn:active {
+  transform: scale(0.95);
+}
+
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.shake-animation {
+  animation: shakeError 0.4s ease-in-out;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.glow-indicator {
+  animation: glowPulse 2s infinite ease-in-out;
+}

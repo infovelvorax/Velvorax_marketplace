@@ -1,0 +1,6 @@
+/* Modern Header Styles */
+.header-glass {
+  background: var(--bg-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}

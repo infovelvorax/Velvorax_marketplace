@@ -1,0 +1,161 @@
+:root {
+  /* ==========================================================================
+     1. LIGHT THEME — (#F4F5F7 background + #18181B text & button + #FFFFFF cards + #4F46E5 subtle indigo)
+     ========================================================================== */
+  
+  /* Backgrounds */
+  --bg-primary: #F4F5F7;
+  --bg-secondary: #EBECEF;
+  --bg-navbar: #F4F5F7;
+  --bg-section: #EBECEF;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #FFFFFF;
+  --bg-surface-secondary: #F4F5F7;
+  --bg-surface-hover: #F0F1F4;
+  --bg-subtle: #EBECEF;
+
+  /* Typography Colors */
+  --text-primary: #18181B;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+  --text-light: #A1A1AA;
+  --text-white: #FFFFFF;
+
+  /* Button System */
+  --button-primary: #18181B;
+  --button-primary-text: #FFFFFF;
+  --button-primary-hover: #27272A;
+  --button-secondary-bg: #FFFFFF;
+  --button-secondary-border: #E5E7EB;
+  --button-secondary-text: #18181B;
+  --button-secondary-hover: #F4F5F7;
+
+  /* Borders & Dividers */
+  --border: #E5E7EB;
+  --border-primary: #E5E7EB;
+  --border-color: #E5E7EB;
+  --border-subtle: #F3F4F6;
+  --border-hover: #D1D5DB;
+  --border-focus: #4F46E5;
+
+  /* Accent Colors (Refined Indigo/Blue) */
+  --accent: #4F46E5;
+  --accent-hover: #4338CA;
+  --accent-light: #EEF2FF;
+  --accent-border: #C7D2FE;
+  --accent-text: #4F46E5;
+
+  /* Status Colors (NO yellow/gold in primary UI) */
+  --success: #15803D;
+  --success-light: #DCFCE7;
+  --warning: #4F46E5;
+  --warning-light: #EEF2FF;
+  --error: #DC2626;
+  --error-light: #FEE2E2;
+
+  /* Sizing & Heights */
+  --input-height: 52px;
+  --button-height: 48px;
+  --hero-search-height: 60px;
+  --navbar-height: 80px;
+  --navbar-mobile-height: 72px;
+  --max-content-width: 1380px;
+
+  /* Typography Scale */
+  --font-hero: clamp(36px, 5vw, 56px);
+  --font-h1: 34px;
+  --font-h2: 26px;
+  --font-h3: 20px;
+  --font-card-title: 18px;
+  --font-body: 16px;
+  --font-small: 14px;
+  --font-meta: 13px;
+
+  /* Spacing Scale */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 80px;
+
+  /* Radii */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows for Light Theme */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px 0 rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 2px 8px -2px rgba(0, 0, 0, 0.05), 0 1px 3px -1px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover: 0 12px 24px -4px rgba(0, 0, 0, 0.09), 0 4px 8px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* ==========================================================================
+   2. DARK THEME — (#0E0A1A -> #17112B -> #101B35 gradient + #8B8CFF accent/button + #1B1730 cards)
+   ========================================================================== */
+.dark, [data-theme="dark"] {
+  /* Backgrounds */
+  --bg-primary: #0E0A1A;
+  --bg-gradient: linear-gradient(135deg, #0E0A1A 0%, #17112B 45%, #101B35 100%);
+  --bg-secondary: #17112B;
+  --bg-navbar: #120D22;
+  --bg-section: #17112B;
+  --bg-surface: #1B1730;
+  --bg-surface-elevated: #221D3B;
+  --bg-surface-secondary: #221D3B;
+  --bg-surface-hover: #262042;
+  --bg-subtle: #221D3B;
+
+  /* Typography Colors */
+  --text-primary: #F5F7FF;
+  --text-secondary: #B9BED0;
+  --text-muted: #858BA1;
+  --text-light: #6C7289;
+  --text-white: #FFFFFF;
+
+  /* Button System */
+  --button-primary: #8B8CFF;
+  --button-primary-text: #0E0A1A;
+  --button-primary-hover: #A5A6FF;
+  --button-secondary-bg: transparent;
+  --button-secondary-border: #8B8CFF;
+  --button-secondary-text: #BFC1FF;
+  --button-secondary-hover: rgba(139, 140, 255, 0.12);
+
+  /* Borders & Dividers */
+  --border: #34304A;
+  --border-primary: #34304A;
+  --border-color: #34304A;
+  --border-subtle: #26213B;
+  --border-hover: #4A4568;
+  --border-focus: #8B8CFF;
+
+  /* Accent Colors */
+  --accent: #8B8CFF;
+  --accent-hover: #A5A6FF;
+  --accent-light: #221D3B;
+  --accent-border: rgba(139, 140, 255, 0.3);
+  --accent-text: #8B8CFF;
+
+  /* Status Colors */
+  --success: #34D399;
+  --success-light: #064E3B;
+  --warning: #8B8CFF;
+  --warning-light: #221D3B;
+  --error: #F87171;
+  --error-light: #7F1D1D;
+
+  /* Shadows for Dark Mode */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 14px 0 rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 14px 32px -4px rgba(0, 0, 0, 0.8);
+  --shadow-card: 0 2px 10px -2px rgba(0, 0, 0, 0.6);
+  --shadow-card-hover: 0 14px 28px -4px rgba(0, 0, 0, 0.8), 0 0 16px rgba(139, 140, 255, 0.12);
+}

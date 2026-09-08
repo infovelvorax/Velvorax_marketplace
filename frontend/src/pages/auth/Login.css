@@ -1,0 +1,45 @@
+/* Velvorax Login Page Custom Styling */
+.auth-role-card {
+  background-color: var(--bg-surface);
+  border: 1.5px solid var(--border-primary);
+  border-radius: 24px;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.25s ease, 
+              box-shadow 0.25s ease;
+  min-height: 380px;
+}
+
+.auth-role-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: 0 16px 32px -8px rgba(79, 70, 229, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+}
+
+.dark .auth-role-card,
+[data-theme="dark"] .auth-role-card {
+  background-color: var(--bg-surface);
+  border-color: var(--border-primary);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+}
+
+.dark .auth-role-card:hover,
+[data-theme="dark"] .auth-role-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 16px 36px -8px rgba(139, 140, 255, 0.22), 0 0 24px rgba(139, 140, 255, 0.1);
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

@@ -1,0 +1,36 @@
+/* Velvorax Marketplace Search & Filter Engine Styles */
+
+.velvorax-search-container {
+  min-height: 85vh;
+  background-color: var(--bg-primary);
+}
+
+.search-glass-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-card);
+}
+
+.search-suggestion-item:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Custom scrollbar for filter lists */
+.filter-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.filter-scrollbar::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+.filter-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 4px;
+}
+
+.filter-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

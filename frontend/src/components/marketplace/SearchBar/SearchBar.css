@@ -1,0 +1,27 @@
+/* ==========================================================================
+   SEARCH BAR PROFESSIONAL ENHANCEMENTS
+   ========================================================================== */
+
+.search-suggestion-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-primary);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dark .search-suggestion-panel {
+  background: rgba(27, 23, 48, 0.96);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+.search-suggestion-item {
+  transition: all 0.15s ease;
+}
+
+.search-suggestion-item:hover {
+  background-color: var(--bg-secondary);
+  padding-left: 1.5rem;
+}

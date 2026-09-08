@@ -1,0 +1,376 @@
+@import "tailwindcss";
+@import "./variables.css";
+
+@theme {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-subtle: var(--bg-subtle);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-button-primary: var(--button-primary);
+  --color-button-primary-text: var(--button-primary-text);
+
+  --color-border-primary: var(--border-primary);
+  --color-border-subtle: var(--border-subtle);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+}
+
+/* Base typography & page resets */
+:root {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  color-scheme: light;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.dark, [data-theme="dark"] {
+  color-scheme: dark;
+  background: var(--bg-gradient, linear-gradient(135deg, #0E0A1A 0%, #17112B 45%, #101B35 100%));
+  background-attachment: fixed;
+  color: var(--text-primary);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.dark body, [data-theme="dark"] body {
+  background: var(--bg-gradient, linear-gradient(135deg, #0E0A1A 0%, #17112B 45%, #101B35 100%));
+  background-attachment: fixed;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-hover);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.animate-slide-right {
+  animation: slideRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-left {
+  animation: slideLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s ease-out forwards;
+}
+
+/* ==========================================================================
+   UNIVERSAL PROFESSIONAL DROPDOWN & SELECT SYSTEM
+   ========================================================================== */
+
+/* Universal Select Styling */
+select, .custom-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md, 14px);
+  padding: 10px 38px 10px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px 16px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+.dark select, .dark .custom-select, [data-theme="dark"] select, [data-theme="dark"] .custom-select {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-primary);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238B8CFF' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+select:hover:not(:disabled), .custom-select:hover:not(:disabled) {
+  border-color: var(--border-hover, #D1D5DB);
+  background-color: var(--bg-surface-hover, #F0F1F4);
+}
+
+.dark select:hover:not(:disabled), .dark .custom-select:hover:not(:disabled) {
+  border-color: var(--border-hover, #4A4568);
+  background-color: var(--bg-surface-hover, #262042);
+}
+
+select:focus, .custom-select:focus {
+  border-color: var(--button-primary, #18181B);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  background-color: var(--bg-surface);
+}
+
+.dark select:focus, .dark .custom-select:focus {
+  border-color: var(--button-primary, #8B8CFF);
+  box-shadow: 0 0 0 3px rgba(139, 140, 255, 0.25);
+  background-color: var(--bg-surface-elevated, #221D3B);
+}
+
+select:disabled, .custom-select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background-color: var(--bg-secondary);
+}
+
+/* Option Elements Styling */
+select option {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 12px 14px;
+  font-weight: 500;
+}
+
+.dark select option, [data-theme="dark"] select option {
+  background-color: #1B1730;
+  color: #F5F7FF;
+}
+
+/* Luxury Pill Select Utility */
+.select-luxury {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+  padding: 11px 40px 11px 16px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366F1' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 15px 15px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+}
+
+.dark .select-luxury {
+  background-color: var(--bg-surface);
+  border-color: var(--border-primary);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238B8CFF' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+}
+
+.select-luxury:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.select-luxury:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Glass Dropdown Overlay Panel */
+.dropdown-panel-luxury {
+  background: var(--bg-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-primary);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.12),
+              0 0 0 1px var(--border-subtle);
+}
+
+.dark .dropdown-panel-luxury {
+  background: rgba(27, 23, 48, 0.95);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+              0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE SYSTEM & UTILITIES
+   ========================================================================== */
+
+/* Safe Area Insets */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Mobile Touch Targets (min 44px on phones) */
+@media (max-width: 640px) {
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+  }
+}
+
+/* Smooth Horizontal Chip Bar Scrolling */
+.scroll-touch-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.scroll-touch-x::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-touch-x > * {
+  scroll-snap-align: start;
+}
+
+/* Responsive Table Wrapper with Smooth Scrolling */
+.table-responsive-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-lg, 18px);
+  border: 1px solid var(--border-primary);
+  background: var(--bg-surface);
+}
+
+.table-responsive-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-thumb {
+  background-color: var(--border-hover);
+  border-radius: 9999px;
+}
+
+/* Responsive Container Breakpoints Extra Utilities */
+@media (max-width: 480px) {
+  .text-responsive-title {
+    font-size: 1.35rem !important;
+    line-height: 1.25 !important;
+  }
+  
+  .card-responsive-padding {
+    padding: 1rem !important;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .text-responsive-title {
+    font-size: 1.65rem !important;
+    line-height: 1.3 !important;
+  }
+}
+
+/* Modal Bottom-Sheet Behavior on Mobile Screens */
+@media (max-width: 640px) {
+  .modal-mobile-bottom-sheet {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .modal-mobile-bottom-sheet > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 28px !important;
+    border-top-right-radius: 28px !important;
+    max-height: 92vh !important;
+    overflow-y: auto !important;
+  }
+}
+
+

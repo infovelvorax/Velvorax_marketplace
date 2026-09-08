@@ -1,0 +1,8 @@
+/* Modern Light ListingCard Styles */
+.listing-card-zoom {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.listing-card-container:hover .listing-card-zoom {
+  transform: scale(1.04);
+}

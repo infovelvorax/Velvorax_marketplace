@@ -1,0 +1,362 @@
+/* Currency Selector Styles */
+
+.currency-selector-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.currency-selector-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary, #94a3b8);
+  margin-bottom: 6px;
+}
+
+@media (min-width: 640px) {
+  .currency-selector-label {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+}
+
+.currency-selector-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-surface, #1e293b);
+  border: 1px solid var(--border-primary, rgba(255, 255, 255, 0.1));
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-primary, #f8fafc);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 44px;
+  text-align: left;
+}
+
+.currency-selector-trigger:hover:not(:disabled) {
+  border-color: var(--button-primary, #3b82f6);
+  background-color: var(--bg-surface-hover, #243247);
+}
+
+.currency-selector-trigger--active {
+  border-color: var(--button-primary, #3b82f6);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.currency-selector-trigger--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.currency-selector-selected-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.currency-flag {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.currency-code {
+  font-weight: 800;
+  color: var(--text-primary, #ffffff);
+  letter-spacing: 0.02em;
+}
+
+.currency-separator {
+  color: var(--text-muted, #64748b);
+  font-size: 11px;
+}
+
+.currency-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary, #94a3b8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+@media (min-width: 640px) {
+  .currency-name {
+    max-width: 240px;
+  }
+}
+
+.currency-symbol-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent, #38bdf8);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.currency-chevron {
+  font-size: 9px;
+  color: var(--text-muted, #64748b);
+  margin-left: 10px;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.currency-chevron--rotated {
+  transform: rotate(180deg);
+  color: var(--button-primary, #3b82f6);
+}
+
+/* Dropdown Menu */
+.currency-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: var(--bg-surface, #1e293b);
+  border: 1px solid var(--border-primary, rgba(255, 255, 255, 0.12));
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  max-height: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Search Header */
+.currency-search-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  background-color: var(--bg-secondary, #0f172a);
+  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.currency-search-icon {
+  font-size: 13px;
+  color: var(--text-muted, #64748b);
+  flex-shrink: 0;
+}
+
+.currency-search-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+  outline: none;
+}
+
+.currency-search-input::placeholder {
+  color: var(--text-muted, #64748b);
+  font-weight: normal;
+}
+
+.currency-search-clear {
+  background: none;
+  border: none;
+  color: var(--text-muted, #64748b);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.currency-search-clear:hover {
+  color: var(--text-primary, #ffffff);
+}
+
+/* Scroll List */
+.currency-list-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  flex: 1;
+  padding: 8px 0;
+}
+
+.currency-section {
+  padding: 4px 0;
+}
+
+.currency-section-title {
+  padding: 6px 14px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted, #64748b);
+}
+
+/* Popular Grid */
+.currency-popular-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 4px 12px 10px;
+}
+
+@media (min-width: 480px) {
+  .currency-popular-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 640px) {
+  .currency-popular-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.currency-popular-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background-color: var(--bg-secondary, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.06));
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 11px;
+  color: var(--text-primary, #f1f5f9);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.currency-popular-chip:hover {
+  background-color: var(--bg-surface-hover, rgba(255, 255, 255, 0.1));
+  border-color: var(--button-primary, #3b82f6);
+}
+
+.currency-popular-chip--selected {
+  background-color: var(--button-primary, #3b82f6);
+  color: var(--button-primary-text, #ffffff);
+  border-color: var(--button-primary, #3b82f6);
+}
+
+.currency-popular-chip--selected .currency-symbol-tag {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.currency-symbol-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent, #38bdf8);
+  background-color: rgba(56, 189, 248, 0.1);
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+/* Option Row */
+.currency-options-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.currency-option-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.currency-option-row:hover {
+  background-color: var(--bg-secondary, rgba(255, 255, 255, 0.06));
+}
+
+.currency-option-row--selected {
+  background-color: rgba(59, 130, 246, 0.12);
+}
+
+.currency-option-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.currency-option-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.currency-option-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.currency-option-code {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-primary, #ffffff);
+}
+
+.currency-option-country {
+  font-size: 11px;
+  color: var(--text-muted, #64748b);
+}
+
+.currency-option-name {
+  font-size: 11px;
+  color: var(--text-secondary, #94a3b8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.currency-option-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+  flex-shrink: 0;
+}
+
+.currency-option-symbol {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent, #38bdf8);
+}
+
+.currency-check-icon {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--button-primary, #3b82f6);
+}
+
+.currency-no-results {
+  padding: 24px 16px;
+  text-align: center;
+}

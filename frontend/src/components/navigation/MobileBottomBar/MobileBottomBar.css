@@ -1,0 +1,11 @@
+/* Mobile Bottom Navigation Bar Styles */
+
+.mobile-bottom-bar-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@supports (-webkit-touch-callout: none) {
+  .mobile-bottom-bar-safe {
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 8px);
+  }
+}

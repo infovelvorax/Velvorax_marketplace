@@ -1,0 +1,348 @@
+/* Floating Animated Robot Trigger Button Styles */
+
+.velvorax-robot-trigger-wrapper {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =======================================================
+   1. COLOR PALETTES PER ROLE
+   ======================================================= */
+
+/* Buyer AI (Cyan / Deep Electric Blue) */
+.robot-theme-buyer {
+  --robot-primary: #0284c7;
+  --robot-secondary: #00f2fe;
+  --robot-bg: linear-gradient(135deg, #0369a1 0%, #0284c7 50%, #06b6d4 100%);
+  --robot-glow: rgba(6, 182, 212, 0.45);
+  --robot-visor-bg: #0f172a;
+  --robot-eye-color: #38bdf8;
+  --robot-badge-bg: #0369a1;
+}
+
+/* Seller AI (Emerald / Mint Green) */
+.robot-theme-seller {
+  --robot-primary: #059669;
+  --robot-secondary: #34d399;
+  --robot-bg: linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
+  --robot-glow: rgba(16, 185, 129, 0.45);
+  --robot-visor-bg: #064e3b;
+  --robot-eye-color: #6ee7b7;
+  --robot-badge-bg: #065f46;
+}
+
+/* Admin AI (Royal Violet / Purple) */
+.robot-theme-admin {
+  --robot-primary: #7c3aed;
+  --robot-secondary: #c084fc;
+  --robot-bg: linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #a855f7 100%);
+  --robot-glow: rgba(168, 85, 247, 0.45);
+  --robot-visor-bg: #2e1065;
+  --robot-eye-color: #d8b4fe;
+  --robot-badge-bg: #581c87;
+}
+
+/* =======================================================
+   2. MAIN FLOATING BUTTON
+   ======================================================= */
+
+.velvorax-robot-btn {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--robot-bg);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 25px -3px var(--robot-glow), 0 4px 12px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: robotFloat 3.5s ease-in-out infinite;
+}
+
+.velvorax-robot-btn:hover {
+  transform: translateY(-6px) scale(1.08);
+  box-shadow: 0 16px 32px -4px var(--robot-glow), 0 8px 16px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.velvorax-robot-btn:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+.velvorax-robot-btn.is-open {
+  animation: none;
+  transform: rotate(90deg);
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* =======================================================
+   3. ROBOT SVG GRAPHICS & ANIMATIONS
+   ======================================================= */
+
+.robot-avatar-container {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.robot-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.robot-head-shell {
+  fill: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+}
+
+.robot-visor {
+  fill: var(--robot-visor-bg);
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 1;
+}
+
+.robot-neck-base {
+  fill: rgba(255, 255, 255, 0.2);
+}
+
+.robot-antenna-bulb {
+  animation: antennaPulse 2s ease-in-out infinite;
+  transform-origin: 32px 6px;
+  filter: drop-shadow(0 0 6px var(--robot-secondary));
+}
+
+.robot-eye {
+  fill: var(--robot-eye-color);
+  animation: eyeBlink 4s infinite ease-in-out;
+  transform-origin: center;
+  filter: drop-shadow(0 0 4px var(--robot-eye-color));
+}
+
+.robot-eye-right {
+  animation-delay: 0.05s;
+}
+
+.robot-close-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f8fafc;
+}
+
+/* Role Tag Under Avatar */
+.robot-role-tag {
+  position: absolute;
+  bottom: -6px;
+  background: var(--robot-badge-bg);
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* =======================================================
+   4. UNREAD BADGE & THINKING PULSES
+   ======================================================= */
+
+.robot-unread-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+  animation: badgePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.robot-pulse-ring {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border-radius: 50%;
+  border: 2px solid var(--robot-secondary);
+  animation: pulseRing 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  pointer-events: none;
+}
+
+/* Thinking mode modifications */
+.velvorax-robot-btn.is-thinking .robot-eye {
+  animation: thinkingScan 1s infinite alternate ease-in-out;
+}
+
+.velvorax-robot-btn.is-thinking .robot-antenna-bulb {
+  animation: antennaPulse 0.6s infinite ease-in-out;
+}
+
+/* =======================================================
+   5. HOVER TOOLTIP
+   ======================================================= */
+
+.robot-hover-tooltip {
+  position: absolute;
+  right: 76px;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  opacity: 0;
+  visibility: hidden;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.robot-hover-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  transform: translateY(-50%);
+  border-width: 6px 0 6px 6px;
+  border-style: solid;
+  border-color: transparent transparent transparent #0f172a;
+}
+
+.velvorax-robot-trigger-wrapper:hover .robot-hover-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* =======================================================
+   6. KEYFRAME ANIMATIONS
+   ======================================================= */
+
+@keyframes robotFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes eyeBlink {
+  0%, 45%, 55%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes antennaPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
+}
+
+@keyframes thinkingScan {
+  0% {
+    transform: translateX(-2.5px);
+  }
+  100% {
+    transform: translateX(2.5px);
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .velvorax-robot-trigger-wrapper {
+    bottom: 76px;
+    right: 16px;
+  }
+  .velvorax-robot-btn {
+    width: 52px;
+    height: 52px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  }
+  .robot-avatar-container {
+    width: 36px;
+    height: 36px;
+  }
+  .robot-hover-tooltip {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .velvorax-robot-trigger-wrapper {
+    bottom: 72px;
+    right: 12px;
+  }
+  .velvorax-robot-btn {
+    width: 46px;
+    height: 46px;
+  }
+  .robot-avatar-container {
+    width: 30px;
+    height: 30px;
+  }
+}
+

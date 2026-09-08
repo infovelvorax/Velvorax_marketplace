@@ -1,0 +1,69 @@
+/* ==============================================================================
+   SIDEBAR COMPONENT - LUXURY MODERN STYLING
+   ============================================================================== */
+
+.dashboard-sidebar-container {
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--bg-surface, #ffffff);
+}
+
+.dark .dashboard-sidebar-container {
+  background: rgba(18, 14, 34, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.sidebar-nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary, #64748b);
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.sidebar-nav-link:hover {
+  color: var(--text-primary, #0f172a);
+  background: var(--bg-secondary, rgba(255, 255, 255, 0.06));
+  transform: translateX(2px);
+}
+
+.sidebar-nav-link.active {
+  color: var(--text-primary, #ffffff);
+  background: var(--bg-secondary, rgba(255, 255, 255, 0.08));
+  border-color: var(--border-primary, rgba(255, 255, 255, 0.12));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.dark .sidebar-nav-link.active {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.05) 100%);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: #ffffff;
+}
+
+.sidebar-nav-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 3.5px;
+  border-radius: 0 4px 4px 0;
+  background: var(--button-primary, #6366f1);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+}
+
+.sidebar-badge {
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
