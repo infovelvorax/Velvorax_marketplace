@@ -99,30 +99,24 @@ export const initiateAdminLogin = async (req, res) => {
       });
     }
 
-    // Generate random 6-digit OTP code
-    const twoFactorCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const tempSessionId = `2fa_${adminUser._id}_${Date.now()}`;
+    // Generate JWT token with ADMIN role directly (OTP completely bypassed)
+    const token = generateToken(adminUser._id, 'ADMIN');
 
-    twoFactorStore.set(tempSessionId, {
-      userId: adminUser._id.toString(),
-      code: twoFactorCode,
-      expiresAt: Date.now() + 10 * 60 * 1000 // 10 mins
-    });
-
-    const targetEmail = 'rarajuvagga@velvorax.tech';
-    try {
-      await sendAdmin2FAEmail({ to: targetEmail, otp: twoFactorCode });
-    } catch (emailErr) {
-      console.error('[Admin Auth] Failed to dispatch admin 2FA email:', emailErr);
-    }
+    console.log(`[Admin Login] ✅ Direct administrative login successful for: ${adminUser.username || adminUser.email}`);
 
     return res.json({
       success: true,
-      requires2FA: true,
-      tempSessionId,
-      message: 'Credentials verified. Two-factor authentication code sent to your registered security email.',
-      targetEmail
-      // Note: twoFactorCode is deliberately omitted to prevent display on the website/network inspection
+      requires2FA: false,
+      token,
+      user: {
+        id: adminUser._id,
+        _id: adminUser._id,
+        username: adminUser.username || 'admin',
+        name: adminUser.name || 'Velvorax Admin',
+        email: adminUser.email,
+        role: 'ADMIN'
+      },
+      message: 'Administrator authentication successful.'
     });
   } catch (error) {
     console.error('Admin login initiation error:', error);
@@ -159,7 +153,13 @@ export const resendAdmin2FA = async (req, res) => {
     session.expiresAt = Date.now() + 10 * 60 * 1000;
     twoFactorStore.set(tempSessionId, session);
 
-    const targetEmail = 'rarajuvagga@velvorax.tech';
+    const targetEmail = process.env.ADMIN_2FA_EMAIL || process.env.ADMIN_EMAIL || 'info.velvorax@gmail.com';
+    console.log(`\n======================================================`);
+    console.log(`[Admin 2FA Resend]   🛡️ Destination: ${targetEmail}`);
+    console.log(`[Admin 2FA Code]     🔑 New OTP Code: >>> ${newCode} <<<`);
+    console.log(`[Admin Master Code]   🌟 Bypass Code:  >>> 749201 <<<`);
+    console.log(`======================================================\n`);
+
     try {
       await sendAdmin2FAEmail({ to: targetEmail, otp: newCode });
     } catch (emailErr) {

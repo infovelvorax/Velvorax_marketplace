@@ -57,8 +57,9 @@ export const createAdmin = async () => {
         { _id: existingAdmin._id },
         {
           $set: {
-            username: existingAdmin.username || adminUsername,
-            email: existingAdmin.email || adminEmail,
+            username: adminUsername,
+            email: adminEmail,
+            passwordHash: hashedPassword,
             role: 'ADMIN',
             accountStatus: 'ACTIVE',
             verificationStatus: 'VERIFIED',
@@ -67,8 +68,10 @@ export const createAdmin = async () => {
         }
       );
 
-      console.log('Admin account verified successfully (idempotent - password preserved).');
-      console.log(`Admin username: ${existingAdmin.username || adminUsername}`);
+      console.log('Admin account synchronized successfully with .env credentials.');
+      console.log(`Admin username: ${adminUsername}`);
+      console.log(`Admin email:    ${adminEmail}`);
+      console.log(`Admin role:     ADMIN`);
       await mongoose.disconnect();
       return;
     }

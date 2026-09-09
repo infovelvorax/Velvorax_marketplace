@@ -8,9 +8,9 @@ import { cn } from '../../utils';
 
 export function AdminLoginModal({ isOpen, onClose }) {
   const navigate = useNavigate();
-  const { verifyAdmin2FA, adminLogin } = useAuth();
+  const { adminLogin } = useAuth();
   
-  // STAGES: 'PIN' | 'CREDENTIALS' | '2FA'
+  // STAGES: 'PIN' | 'CREDENTIALS'
   const [stage, setStage] = useState('PIN');
 
   // Stage 1: PIN State
@@ -21,18 +21,12 @@ export function AdminLoginModal({ isOpen, onClose }) {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
 
-  // Stage 3: 2FA State
-  const [twoFactorSession, setTwoFactorSession] = useState(null);
-  const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
-  const [resendCooldown, setResendCooldown] = useState(0);
-
   // General State
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
   const usernameInputRef = useRef(null);
-  const otpRefs = useRef([]);
 
   // Reset modal state on open
   useEffect(() => {
@@ -40,8 +34,6 @@ export function AdminLoginModal({ isOpen, onClose }) {
       setStage('PIN');
       setPin('');
       setCredentials({ username: '', password: '' });
-      setOtpDigits(['', '', '', '', '', '']);
-      setTwoFactorSession(null);
       setError('');
       setSuccessMsg('');
       setShowPassword(false);
@@ -87,14 +79,6 @@ export function AdminLoginModal({ isOpen, onClose }) {
       handleVerifyPin(pin);
     }
   }, [pin, stage]);
-
-  // Countdown timer for 2FA resend
-  useEffect(() => {
-    if (resendCooldown > 0) {
-      const timer = setTimeout(() => setResendCooldown(c => c - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [resendCooldown]);
 
   if (!isOpen) return null;
 
@@ -152,7 +136,7 @@ export function AdminLoginModal({ isOpen, onClose }) {
   };
 
   // -------------------------------------------------------------
-  // STAGE 2: VERIFY CREDENTIALS & INITIATE 2FA
+  // STAGE 2: VERIFY CREDENTIALS & DIRECT AUTHENTICATION
   // -------------------------------------------------------------
   const handleCredentialsSubmit = async (e) => {
     if (e) e.preventDefault();
@@ -168,128 +152,22 @@ export function AdminLoginModal({ isOpen, onClose }) {
       const trimmedUser = credentials.username.trim();
       const trimmedPass = credentials.password;
 
-      const initRes = await authService.initiateAdminLogin({
+      const user = await adminLogin({
         username: trimmedUser,
         password: trimmedPass
       });
 
-      if (initRes && initRes.success) {
-        setTwoFactorSession({
-          tempSessionId: initRes.tempSessionId,
-          targetEmail: initRes.targetEmail || 'rarajuvagga@velvorax.tech'
-        });
-        setStage('2FA');
-        setResendCooldown(45);
-        setSuccessMsg('Verification code sent to rarajuvagga@velvorax.tech');
-        setTimeout(() => setSuccessMsg(''), 4000);
-        setTimeout(() => otpRefs.current[0]?.focus(), 150);
+      if (user) {
+        setSuccessMsg('Authentication successful! Access granted. Opening dashboard...');
+        setTimeout(() => {
+          onClose();
+          navigate('/admin/dashboard', { replace: true });
+        }, 350);
       } else {
-        throw new Error(initRes?.message || 'Invalid administrator credentials.');
+        throw new Error('Invalid administrator credentials.');
       }
     } catch (err) {
-      setError(err?.message || 'Invalid administrator credentials.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // -------------------------------------------------------------
-  // STAGE 3: VERIFY 2FA OTP
-  // -------------------------------------------------------------
-  const handleOtpChange = (index, value) => {
-    const val = value.replace(/\D/g, '');
-    if (!val) {
-      const newOtp = [...otpDigits];
-      newOtp[index] = '';
-      setOtpDigits(newOtp);
-      return;
-    }
-
-    const newOtp = [...otpDigits];
-    if (val.length > 1) {
-      const chars = val.slice(0, 6).split('');
-      chars.forEach((c, i) => {
-        if (index + i < 6) newOtp[index + i] = c;
-      });
-      setOtpDigits(newOtp);
-      const nextIndex = Math.min(index + chars.length, 5);
-      otpRefs.current[nextIndex]?.focus();
-      
-      const fullCode = newOtp.join('');
-      if (fullCode.length === 6) {
-        handleVerify2FACode(fullCode);
-      }
-      return;
-    }
-
-    newOtp[index] = val;
-    setOtpDigits(newOtp);
-
-    if (index < 5) {
-      otpRefs.current[index + 1]?.focus();
-    }
-
-    const fullCode = newOtp.join('');
-    if (fullCode.length === 6) {
-      handleVerify2FACode(fullCode);
-    }
-  };
-
-  const handleOtpKeyDown = (index, e) => {
-    if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
-      otpRefs.current[index - 1]?.focus();
-    }
-  };
-
-  const handleVerify2FACode = async (codeToVerify) => {
-    const fullCode = (codeToVerify || otpDigits.join('')).trim();
-    if (fullCode.length !== 6) {
-      setError('Please enter all 6 digits of the 2FA security code.');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const userData = await verifyAdmin2FA({
-        tempSessionId: twoFactorSession?.tempSessionId,
-        code: fullCode
-      });
-
-      if (!userData) {
-        throw new Error('Invalid or expired 2FA verification code.');
-      }
-
-      setSuccessMsg('Security verified! Access granted. Opening dashboard...');
-      setTimeout(() => {
-        onClose();
-        navigate('/admin/dashboard', { replace: true });
-      }, 400);
-    } catch (err) {
-      setError(err?.message || 'Invalid or expired 2FA code. Please check your email and try again.');
-      setOtpDigits(['', '', '', '', '', '']);
-      otpRefs.current[0]?.focus();
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResend2FA = async () => {
-    if (resendCooldown > 0 || loading) return;
-    setLoading(true);
-    setError('');
-    try {
-      if (twoFactorSession?.tempSessionId) {
-        await authService.resendAdmin2FA({
-          tempSessionId: twoFactorSession.tempSessionId
-        });
-      }
-      setResendCooldown(45);
-      setSuccessMsg('A new 2FA code has been dispatched to rarajuvagga@velvorax.tech');
-      setTimeout(() => setSuccessMsg(''), 4000);
-    } catch (err) {
-      setError(err?.message || 'Failed to resend security code.');
+      setError(err?.message || 'Invalid administrator credentials. Please check your username/email and password.');
     } finally {
       setLoading(false);
     }
@@ -326,34 +204,25 @@ export function AdminLoginModal({ isOpen, onClose }) {
             {stage === 'PIN' && (
               <span className="text-[10px] font-black uppercase tracking-widest text-amber-400 px-3 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 inline-flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-                <span>Level 1 Security Gateway</span>
+                <span>Step 1 of 2: Security Clearance PIN</span>
               </span>
             )}
 
             {stage === 'CREDENTIALS' && (
               <span className="text-[10px] font-black uppercase tracking-widest text-indigo-400 px-3 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 inline-flex items-center gap-1.5">
                 <span className="text-emerald-400">✓ PIN Verified</span>
-                <span>• Level 2 Credentials</span>
-              </span>
-            )}
-
-            {stage === '2FA' && (
-              <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 px-3 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 inline-flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Level 3 Two-Factor Authentication</span>
+                <span>• Step 2 of 2: Master Credentials</span>
               </span>
             )}
 
             <h2 className="text-xl sm:text-2xl font-black tracking-tight text-[var(--text-primary)] mt-2">
-              {stage === 'PIN' && 'SECRET ADMIN ACCESS'}
-              {stage === 'CREDENTIALS' && 'ADMINISTRATOR LOGIN'}
-              {stage === '2FA' && '2FA VERIFICATION'}
+              {stage === 'PIN' ? 'SECRET ADMIN ACCESS' : 'ADMINISTRATOR LOGIN'}
             </h2>
 
             <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-              {stage === 'PIN' && 'Enter Master Clearance PIN to unlock admin console'}
-              {stage === 'CREDENTIALS' && 'Enter your authorized master login credentials'}
-              {stage === '2FA' && 'Verify 6-digit security code for authorization'}
+              {stage === 'PIN' 
+                ? 'Enter Master Clearance PIN to unlock admin console' 
+                : 'Enter your username/email and password to enter dashboard'}
             </p>
           </div>
         </div>
@@ -443,7 +312,7 @@ export function AdminLoginModal({ isOpen, onClose }) {
                 onClick={() => handleVerifyPin(pin)}
                 className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/40 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md active:scale-[0.99] cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {loading ? 'Verifying PIN...' : 'Verify PIN'}
+                {loading ? 'Verifying PIN...' : 'Verify PIN & Continue'}
               </button>
 
               <button
@@ -459,7 +328,7 @@ export function AdminLoginModal({ isOpen, onClose }) {
         )}
 
         {/* ============================================================ */}
-        {/* STAGE 2: ADMINISTRATOR CREDENTIALS                           */}
+        {/* STAGE 2: ADMINISTRATOR CREDENTIALS (DIRECT LOGIN)            */}
         {/* ============================================================ */}
         {stage === 'CREDENTIALS' && (
           <form onSubmit={handleCredentialsSubmit} autoComplete="off" className="space-y-4">
@@ -472,7 +341,7 @@ export function AdminLoginModal({ isOpen, onClose }) {
                 type="text"
                 name="admin-username"
                 autoComplete="off"
-                placeholder="admin"
+                placeholder="velvorax_admin or info.velvorax@gmail.com"
                 value={credentials.username}
                 onChange={(e) => {
                   setCredentials(prev => ({ ...prev, username: e.target.value }));
@@ -522,9 +391,9 @@ export function AdminLoginModal({ isOpen, onClose }) {
               <button
                 type="submit"
                 disabled={loading || !credentials.username.trim() || !credentials.password}
-                className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md active:scale-[0.99] cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-600/50 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md active:scale-[0.99] cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {loading ? 'Authenticating...' : 'Proceed to Two-Factor Auth (2FA) &rarr;'}
+                {loading ? 'Signing in...' : 'Sign In & Enter Admin Dashboard 🚀'}
               </button>
 
               <div className="flex items-center justify-between gap-2">
@@ -551,96 +420,6 @@ export function AdminLoginModal({ isOpen, onClose }) {
               </div>
             </div>
           </form>
-        )}
-
-        {/* ============================================================ */}
-        {/* STAGE 3: TWO-FACTOR AUTHENTICATION (2FA)                     */}
-        {/* ============================================================ */}
-        {stage === '2FA' && (
-          <div className="space-y-4">
-            {/* Live Security Dispatch Banner */}
-            <div className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-left space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                  <span>2FA Security Code Dispatched</span>
-                </span>
-                <span className="text-[10px] text-amber-400 font-mono font-bold bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/25">
-                  10-MIN VALID
-                </span>
-              </div>
-              
-              <div className="text-xs text-[var(--text-secondary)] leading-relaxed space-y-1.5">
-                <p>
-                  A 6-digit verification code has been dispatched to the designated administrator email:
-                </p>
-                <div className="font-mono font-bold text-indigo-300 bg-indigo-950/50 p-2.5 rounded-xl border border-indigo-500/20 text-center tracking-wide">
-                  rarajuvagga@velvorax.tech
-                </div>
-                <p className="text-[11px] text-[var(--text-muted)] text-center pt-0.5">
-                  Please check your inbox or spam folder and enter the code below.
-                </p>
-              </div>
-            </div>
-
-            {/* 6 OTP Boxes */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[var(--text-secondary)] block text-center">
-                Enter 6-Digit Verification Code
-              </label>
-              <div className="flex justify-center items-center gap-2 sm:gap-2.5">
-                {otpDigits.map((digit, idx) => (
-                  <input
-                    key={idx}
-                    ref={el => otpRefs.current[idx] = el}
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleOtpChange(idx, e.target.value)}
-                    onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                    disabled={loading}
-                    className="w-10 h-12 sm:w-11 sm:h-13 bg-[var(--bg-secondary)] border border-[var(--border-primary)] focus:border-emerald-500 rounded-xl text-center text-lg font-black text-[var(--text-primary)] focus:outline-none transition-all shadow-xs"
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Resend & Action Buttons */}
-            <div className="pt-2 space-y-2.5">
-              <button
-                type="button"
-                disabled={loading || otpDigits.join('').length !== 6}
-                onClick={() => handleVerify2FACode()}
-                className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-600/40 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md active:scale-[0.99] cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {loading ? 'Verifying 2FA Code...' : 'Complete Authentication & Enter Dashboard 🚀'}
-              </button>
-
-              <div className="flex items-center justify-between text-xs pt-1">
-                <button
-                  type="button"
-                  disabled={resendCooldown > 0 || loading}
-                  onClick={handleResend2FA}
-                  className="font-bold text-indigo-400 hover:text-indigo-300 disabled:text-[var(--text-muted)] transition-colors cursor-pointer disabled:cursor-not-allowed"
-                >
-                  {resendCooldown > 0 ? `Resend Code in ${resendCooldown}s` : 'Resend 2FA Code'}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setStage('CREDENTIALS');
-                    setError('');
-                  }}
-                  disabled={loading}
-                  className="font-bold text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
-                >
-                  &larr; Back to Login
-                </button>
-              </div>
-            </div>
-          </div>
         )}
 
       </div>

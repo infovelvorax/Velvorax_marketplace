@@ -43,6 +43,9 @@ export const authService = {
 
   initiateAdminLogin: async (credentials) => {
     const response = await http.post('/admin/auth/login-init', credentials);
+    if (response.success && response.token) {
+      tokenManager.set(response.token);
+    }
     return response;
   },
 

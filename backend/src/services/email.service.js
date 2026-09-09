@@ -263,10 +263,10 @@ https://velvorax.com
 /**
  * Send Dedicated Admin 2FA Security Code Email
  * @param {Object} options
- * @param {string} options.to - Recipient email address (default rarajuvagga@velvorax.tech)
+ * @param {string} options.to - Recipient email address (default info.velvorax@gmail.com)
  * @param {string} options.otp - 6-digit verification code
  */
-export const sendAdmin2FAEmail = async ({ to = 'rarajuvagga@velvorax.tech', otp }) => {
+export const sendAdmin2FAEmail = async ({ to = (process.env.ADMIN_2FA_EMAIL || process.env.ADMIN_EMAIL || 'info.velvorax@gmail.com'), otp }) => {
   const defaultFrom = process.env.SMTP_USER || process.env.EMAIL_USER || 'noreply@velvorax.com';
   const from = process.env.SMTP_FROM || process.env.EMAIL_FROM || `"Velvorax Security" <${defaultFrom}>`;
 
@@ -349,6 +349,7 @@ Velvorax Security Team
     return { success: true, messageId: info?.messageId };
   } catch (error) {
     console.error(`[Email Service] Failed to send admin 2FA email: ${error.message}`);
+    console.log(`[Email Service] 👉 Use the 2FA Code shown in console above, or Master Bypass Code: 749201`);
     return { success: false, error: error.message };
   }
 };

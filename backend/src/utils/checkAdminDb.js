@@ -11,7 +11,7 @@ async function check() {
       { role: 'ADMIN' },
       { role: 'admin' },
       { username: 'velvorax_admin' },
-      { email: 'rarajuvagga@velvorax.tech' },
+      { email: 'info.velvorax@gmail.com' },
       { email: 'admin@velvorax.com' }
     ]
   });

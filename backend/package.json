@@ -10,7 +10,8 @@
     "seed": "node src/utils/seedData.js",
     "seed:marketplace": "node src/scripts/seedMarketplace.js",
     "seed:marketplace:clean": "node src/scripts/cleanMarketplaceSeed.js",
-    "create-admin": "node src/scripts/createAdmin.js"
+    "create-admin": "node src/scripts/createAdmin.js",
+    "test-smtp": "node scripts/testSmtp.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
