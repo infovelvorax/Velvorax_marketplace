@@ -1,3 +1,7 @@
+export const DEFAULT_CLOUDINARY_CLOUD_NAME = 'attcc2xg';
+export const DEFAULT_CLOUDINARY_UPLOAD_PRESET = 'velvorax_marketplace_listings';
+export const DEFAULT_CLOUDINARY_FOLDER = 'velvorax-marketplace/listings';
+
 /**
  * Retrieves and validates the Cloudinary unsigned upload configuration from Vite environment variables.
  * @returns {{
@@ -9,9 +13,9 @@
  * }}
  */
 export const getCloudinaryConfig = () => {
-  const cloudName = (import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || '').trim();
-  const uploadPreset = (import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || '').trim();
-  const folder = (import.meta.env.VITE_CLOUDINARY_FOLDER || 'velvorax-marketplace/listings').trim();
+  const cloudName = (import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || DEFAULT_CLOUDINARY_CLOUD_NAME || '').trim();
+  const uploadPreset = (import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || DEFAULT_CLOUDINARY_UPLOAD_PRESET || '').trim();
+  const folder = (import.meta.env.VITE_CLOUDINARY_FOLDER || DEFAULT_CLOUDINARY_FOLDER).trim();
 
   const errors = [];
   if (!cloudName) {
