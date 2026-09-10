@@ -2,9 +2,27 @@ import axios from 'axios'
 import { APP_CONFIG } from '../../constants/app'
 
 /**
- * Base URL obtained from Vite environment variables with fallback
+ * Intelligently resolve the API Base URL across local development,
+ * custom environment variables (VITE_API_BASE_URL, VITE_API_URL), and production deployments.
  */
-const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://api.velvorax.com/v1'
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL;
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim()) {
+    let clean = envUrl.trim().replace(/\/+$/, '');
+    // If the provided URL doesn't contain /api/marketplace or /api, append /api/marketplace
+    if (!clean.endsWith('/api/marketplace') && !clean.endsWith('/api')) {
+      clean = `${clean}/api/marketplace`;
+    }
+    return clean;
+  }
+  // Production fallback (standard Marketplace API root)
+  if (import.meta.env.PROD) {
+    return 'https://api.velvorax.com/api/marketplace';
+  }
+  return 'http://localhost:5000/api/marketplace';
+};
+
+const baseURL = getApiBaseUrl();
 
 /**
  * Timeout configuration

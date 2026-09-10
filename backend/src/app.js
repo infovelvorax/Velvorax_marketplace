@@ -30,6 +30,9 @@ dotenv.config();
 
 const app = express();
 
+// Trust reverse proxies (Render, Vercel, Nginx, AWS, Cloudflare) for accurate client IP detection & rate limiting
+app.set('trust proxy', 1);
+
 // 1. HTTP Security Headers (Helmet with custom CSP)
 app.use(
   helmet({
@@ -59,28 +62,57 @@ app.use(
 );
 
 // 2. Strict CORS Configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
-  : [
-      process.env.FRONTEND_URL || 'http://localhost:5173',
-      'http://localhost:3000',
-      'http://127.0.0.1:5173',
-      'http://localhost:5000'
-    ];
+const defaultOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:3000',
+  'http://localhost:5000',
+  'https://velvorax.com',
+  'https://www.velvorax.com',
+  'https://marketplace.velvorax.com',
+  'https://api.velvorax.com'
+];
+
+const envOrigins = [
+  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()) : []),
+  ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL.trim()] : [])
+].filter(Boolean);
+
+const allowedOrigins = Array.from(new Set([...defaultOrigins, ...envOrigins]));
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow server-to-server or non-browser tooling with no origin
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('CORS policy violation: Origin not allowed.'));
+      // Allow server-to-server, curl, Postman, mobile apps with no browser origin
+      if (!origin) {
+        return callback(null, true);
       }
+
+      // Check exact match in configured allowed origins
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Check matching Velvorax or deployment preview domains (e.g. Vercel, Render)
+      try {
+        const url = new URL(origin);
+        if (
+          url.hostname === 'velvorax.com' ||
+          url.hostname.endsWith('.velvorax.com') ||
+          url.hostname.endsWith('.vercel.app') ||
+          url.hostname.endsWith('.onrender.com') ||
+          url.hostname.endsWith('.netlify.app')
+        ) {
+          return callback(null, true);
+        }
+      } catch {}
+
+      // Origin not allowed: gracefully reject preflight without crashing server
+      return callback(null, false);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
   })
 );
 
@@ -137,9 +169,11 @@ app.use('/api/marketplace', rateLimitApi);
 // 9. Mount Marketplace API Routes
 app.use('/api/marketplace/auth', authRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 
 app.use('/api/marketplace/admin', adminRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/admin', adminRoutes);
 
 app.use('/api/marketplace/categories', categoryRoutes);
 app.use('/api/categories', categoryRoutes);

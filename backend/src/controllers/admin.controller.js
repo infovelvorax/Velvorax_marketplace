@@ -6,6 +6,7 @@ import { SellerVerification } from '../models/SellerVerification.js';
 import { Order } from '../models/Order.js';
 import { generateToken } from '../utils/generateToken.js';
 import { sendAdmin2FAEmail } from '../services/email.service.js';
+import { normalizeEmail } from '../utils/normalizeEmail.js';
 
 // ============================================================================
 // 🔑 SECRET ADMIN MASTER CLEARANCE PIN CONFIGURATION (BACKEND)
@@ -61,11 +62,13 @@ export const initiateAdminLogin = async (req, res) => {
     }
 
     const normalizedIdentifier = loginIdentifier.toLowerCase();
+    const normalizedEmail = normalizeEmail(loginIdentifier);
 
     const adminUser = await User.findOne({
       $or: [
         { username: normalizedIdentifier },
-        { email: normalizedIdentifier }
+        { email: normalizedIdentifier },
+        { emailNormalized: normalizedEmail }
       ]
     });
 
@@ -261,12 +264,14 @@ export const adminLogin = async (req, res) => {
     }
 
     const normalizedIdentifier = loginIdentifier.toLowerCase();
+    const normalizedEmail = normalizeEmail(loginIdentifier);
 
-    // Look up administrator by username or email
+    // Look up administrator by username, email, or normalized email
     const adminUser = await User.findOne({
       $or: [
         { username: normalizedIdentifier },
-        { email: normalizedIdentifier }
+        { email: normalizedIdentifier },
+        { emailNormalized: normalizedEmail }
       ]
     });
 

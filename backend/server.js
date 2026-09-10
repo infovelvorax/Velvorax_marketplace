@@ -11,6 +11,7 @@ import app from './src/app.js';
 import { connectDB } from './src/config/db.js';
 import { verifyEmailTransport } from './src/services/email.service.js';
 import { syncUserEmailIndexes } from './src/utils/syncUserEmailIndexes.js';
+import { syncAdminUser } from './src/utils/syncAdminUser.js';
 
 const PORT = process.env.PORT || 5000;
 
@@ -20,6 +21,9 @@ const startServer = async () => {
 
     // Safely verify & backfill emailNormalized indexes without deleting user data
     await syncUserEmailIndexes();
+
+    // Safely verify & synchronize administrator account
+    await syncAdminUser();
 
     // Verify SMTP connection safely on startup
     await verifyEmailTransport();
