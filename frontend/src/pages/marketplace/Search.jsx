@@ -465,7 +465,7 @@ export const Search = () => {
               onClick={() => updateParam('listingType', t.value)}
               className={cn(
                 "py-2 px-3 rounded-xl text-[13px] font-bold text-center border transition-all cursor-pointer",
-                (listingTypeParam.toLowerCase() === t.value) || (!listingTypeParam && t.value === '')
+                ((listingTypeParam || '').toLowerCase() === t.value) || (!listingTypeParam && t.value === '')
                   ? "bg-[var(--button-primary)] border-[var(--button-primary)] text-[var(--button-primary-text)] shadow-xs"
                   : "bg-[var(--bg-surface)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--button-primary)]"
               )}
@@ -661,10 +661,10 @@ export const Search = () => {
                 <button
                   key={b}
                   type="button"
-                  onClick={() => updateParam('brand', brandParam.toLowerCase() === b.toLowerCase() ? '' : b)}
+                  onClick={() => updateParam('brand', (brandParam || '').toLowerCase() === (b || '').toLowerCase() ? '' : b)}
                   className={cn(
                     "px-3 py-1.5 rounded-xl text-[12px] border transition-all cursor-pointer font-semibold",
-                    brandParam.toLowerCase() === b.toLowerCase() ? "bg-[var(--button-primary)] text-[var(--button-primary-text)] font-bold border-[var(--button-primary)]" : "bg-[var(--bg-surface)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    (brandParam || '').toLowerCase() === (b || '').toLowerCase() ? "bg-[var(--button-primary)] text-[var(--button-primary-text)] font-bold border-[var(--button-primary)]" : "bg-[var(--bg-surface)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   )}
                 >
                   {b}
@@ -728,10 +728,10 @@ export const Search = () => {
                 <button
                   key={wm}
                   type="button"
-                  onClick={() => updateParam('workMode', workModeParam.toLowerCase() === wm.toLowerCase() ? '' : wm)}
+                  onClick={() => updateParam('workMode', (workModeParam || '').toLowerCase() === (wm || '').toLowerCase() ? '' : wm)}
                   className={cn(
                     "py-2 px-2 rounded-xl text-[12px] text-center border transition-all cursor-pointer font-semibold",
-                    workModeParam.toLowerCase() === wm.toLowerCase() ? "bg-[var(--button-primary)] text-[var(--button-primary-text)] font-bold border-[var(--button-primary)]" : "bg-[var(--bg-surface)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    (workModeParam || '').toLowerCase() === (wm || '').toLowerCase() ? "bg-[var(--button-primary)] text-[var(--button-primary-text)] font-bold border-[var(--button-primary)]" : "bg-[var(--bg-surface)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   )}
                 >
                   {wm}
@@ -770,10 +770,10 @@ export const Search = () => {
               <button
                 key={b}
                 type="button"
-                onClick={() => updateParam('brand', brandParam.toLowerCase() === b.toLowerCase() ? '' : b)}
+                onClick={() => updateParam('brand', (brandParam || '').toLowerCase() === (b || '').toLowerCase() ? '' : b)}
                 className={cn(
                   "px-3 py-1.5 rounded-xl text-[12px] border transition-all cursor-pointer font-semibold",
-                  brandParam.toLowerCase() === b.toLowerCase() ? "bg-[var(--button-primary)] text-[var(--button-primary-text)] font-bold border-[var(--button-primary)]" : "bg-[var(--bg-surface)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  (brandParam || '').toLowerCase() === (b || '').toLowerCase() ? "bg-[var(--button-primary)] text-[var(--button-primary-text)] font-bold border-[var(--button-primary)]" : "bg-[var(--bg-surface)] border-[var(--border-primary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                 )}
               >
                 {b}

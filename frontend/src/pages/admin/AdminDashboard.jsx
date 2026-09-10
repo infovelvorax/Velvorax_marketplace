@@ -219,6 +219,7 @@ export function AdminDashboard() {
   const filteredConsolidationListings = useMemo(() => {
     const list = consolidationData?.listings || [];
     return list.filter(item => {
+      if (!item) return false;
       // Status Filter
       if (consolidationStatusFilter === 'SOLD' && !item.isSold && item.status !== 'SOLD') return false;
       if (consolidationStatusFilter === 'APPROVED' && (item.isSold || item.status !== 'APPROVED')) return false;
@@ -226,11 +227,11 @@ export function AdminDashboard() {
       if (consolidationStatusFilter === 'REJECTED' && item.status !== 'REJECTED') return false;
 
       // Category Filter
-      if (categoryFilter !== 'ALL' && item.categorySlug !== categoryFilter.toLowerCase()) return false;
+      if (categoryFilter !== 'ALL' && item.categorySlug !== (categoryFilter || '').toLowerCase()) return false;
 
       // Search Query
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
+      const q = (searchQuery || '').toLowerCase().trim();
+      if (q) {
         const titleMatch = item.title?.toLowerCase().includes(q);
         const sellerMatch = item.sellerId?.name?.toLowerCase().includes(q) || item.sellerId?.email?.toLowerCase().includes(q);
         const buyerMatch = item.order?.buyer?.name?.toLowerCase().includes(q) || item.order?.buyer?.email?.toLowerCase().includes(q);
@@ -245,15 +246,16 @@ export function AdminDashboard() {
 
   // Pending Sellers
   const pendingSellers = useMemo(() => {
-    return sellersList.filter(s => s.sellerStatus === 'PENDING_APPROVAL' || s.sellerStatus === 'PENDING' || s.verificationStatus === 'PENDING');
+    return (sellersList || []).filter(s => s && (s.sellerStatus === 'PENDING_APPROVAL' || s.sellerStatus === 'PENDING' || s.verificationStatus === 'PENDING'));
   }, [sellersList]);
 
   // Filtered Sellers
   const filteredSellers = useMemo(() => {
-    return sellersList.filter(s => {
+    return (sellersList || []).filter(s => {
+      if (!s) return false;
       if (sellerStatusFilter !== 'ALL' && s.sellerStatus !== sellerStatusFilter) return false;
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
+      const q = (searchQuery || '').toLowerCase().trim();
+      if (q) {
         const nameMatch = s.name?.toLowerCase().includes(q);
         const emailMatch = s.email?.toLowerCase().includes(q);
         const companyMatch = s.companyName?.toLowerCase().includes(q);
@@ -266,9 +268,10 @@ export function AdminDashboard() {
 
   // Filtered Buyers
   const filteredBuyers = useMemo(() => {
-    return buyersList.filter(b => {
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
+    return (buyersList || []).filter(b => {
+      if (!b) return false;
+      const q = (searchQuery || '').toLowerCase().trim();
+      if (q) {
         const nameMatch = b.name?.toLowerCase().includes(q);
         const emailMatch = b.email?.toLowerCase().includes(q);
         const phoneMatch = b.phone?.includes(q);

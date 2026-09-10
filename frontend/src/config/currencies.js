@@ -177,15 +177,15 @@ export function getCurrencyByCode(code) {
  * @returns {Array}
  */
 export function searchCurrencies(query = '') {
-  const q = String(query).trim().toLowerCase();
+  const q = String(query || '').trim().toLowerCase();
   if (!q) return WORLDWIDE_CURRENCIES;
 
   return WORLDWIDE_CURRENCIES.filter(item => {
     return (
-      item.code.toLowerCase().includes(q) ||
-      item.name.toLowerCase().includes(q) ||
-      item.country.toLowerCase().includes(q) ||
-      item.symbol.toLowerCase().includes(q)
+      (item?.code || '').toLowerCase().includes(q) ||
+      (item?.name || '').toLowerCase().includes(q) ||
+      (item?.country || '').toLowerCase().includes(q) ||
+      (item?.symbol || '').toLowerCase().includes(q)
     );
   });
 }

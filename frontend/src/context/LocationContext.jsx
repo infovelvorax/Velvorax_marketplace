@@ -381,18 +381,18 @@ export const DEFAULT_WORLDWIDE_LOCATIONS = [
 ];
 
 export const DEFAULT_POPULAR_CITIES = [
-  { name: 'Dubai', countryName: 'United Arab Emirates', countryCode: 'AE', region: 'Dubai', currency: 'AED', currencySymbol: 'AED' },
-  { name: 'London', countryName: 'United Kingdom', countryCode: 'GB', region: 'England', currency: 'GBP', currencySymbol: '£' },
-  { name: 'New York City', countryName: 'United States', countryCode: 'US', region: 'New York', currency: 'USD', currencySymbol: '$' },
-  { name: 'San Francisco', countryName: 'United States', countryCode: 'US', region: 'California', currency: 'USD', currencySymbol: '$' },
-  { name: 'Bengaluru', countryName: 'India', countryCode: 'IN', region: 'Karnataka', currency: 'INR', currencySymbol: '₹' },
-  { name: 'Chennai', countryName: 'India', countryCode: 'IN', region: 'Tamil Nadu', currency: 'INR', currencySymbol: '₹' },
-  { name: 'Mumbai', countryName: 'India', countryCode: 'IN', region: 'Maharashtra', currency: 'INR', currencySymbol: '₹' },
-  { name: 'Hyderabad', countryName: 'India', countryCode: 'IN', region: 'Telangana', currency: 'INR', currencySymbol: '₹' },
-  { name: 'Toronto', countryName: 'Canada', countryCode: 'CA', region: 'Ontario', currency: 'CAD', currencySymbol: 'CA$' },
-  { name: 'Sydney', countryName: 'Australia', countryCode: 'AU', region: 'New South Wales', currency: 'AUD', currencySymbol: 'A$' },
-  { name: 'Singapore', countryName: 'Singapore', countryCode: 'SG', region: 'Central Region', currency: 'SGD', currencySymbol: 'S$' },
-  { name: 'Berlin', countryName: 'Germany', countryCode: 'DE', region: 'Berlin', currency: 'EUR', currencySymbol: '€' }
+  { cityName: 'Dubai', name: 'Dubai', city: 'Dubai', countryName: 'United Arab Emirates', country: 'United Arab Emirates', countryCode: 'AE', regionName: 'Dubai', region: 'Dubai', currency: 'AED', currencySymbol: 'AED' },
+  { cityName: 'London', name: 'London', city: 'London', countryName: 'United Kingdom', country: 'United Kingdom', countryCode: 'GB', regionName: 'England', region: 'England', currency: 'GBP', currencySymbol: '£' },
+  { cityName: 'New York City', name: 'New York City', city: 'New York City', countryName: 'United States', country: 'United States', countryCode: 'US', regionName: 'New York', region: 'New York', currency: 'USD', currencySymbol: '$' },
+  { cityName: 'San Francisco', name: 'San Francisco', city: 'San Francisco', countryName: 'United States', country: 'United States', countryCode: 'US', regionName: 'California', region: 'California', currency: 'USD', currencySymbol: '$' },
+  { cityName: 'Bengaluru', name: 'Bengaluru', city: 'Bengaluru', countryName: 'India', country: 'India', countryCode: 'IN', regionName: 'Karnataka', region: 'Karnataka', currency: 'INR', currencySymbol: '₹' },
+  { cityName: 'Chennai', name: 'Chennai', city: 'Chennai', countryName: 'India', country: 'India', countryCode: 'IN', regionName: 'Tamil Nadu', region: 'Tamil Nadu', currency: 'INR', currencySymbol: '₹' },
+  { cityName: 'Mumbai', name: 'Mumbai', city: 'Mumbai', countryName: 'India', country: 'India', countryCode: 'IN', regionName: 'Maharashtra', region: 'Maharashtra', currency: 'INR', currencySymbol: '₹' },
+  { cityName: 'Hyderabad', name: 'Hyderabad', city: 'Hyderabad', countryName: 'India', country: 'India', countryCode: 'IN', regionName: 'Telangana', region: 'Telangana', currency: 'INR', currencySymbol: '₹' },
+  { cityName: 'Toronto', name: 'Toronto', city: 'Toronto', countryName: 'Canada', country: 'Canada', countryCode: 'CA', regionName: 'Ontario', region: 'Ontario', currency: 'CAD', currencySymbol: 'CA$' },
+  { cityName: 'Sydney', name: 'Sydney', city: 'Sydney', countryName: 'Australia', country: 'Australia', countryCode: 'AU', regionName: 'New South Wales', region: 'New South Wales', currency: 'AUD', currencySymbol: 'A$' },
+  { cityName: 'Singapore', name: 'Singapore', city: 'Singapore', countryName: 'Singapore', country: 'Singapore', countryCode: 'SG', regionName: 'Central Region', region: 'Central Region', currency: 'SGD', currencySymbol: 'S$' },
+  { cityName: 'Berlin', name: 'Berlin', city: 'Berlin', countryName: 'Germany', country: 'Germany', countryCode: 'DE', regionName: 'Berlin', region: 'Berlin', currency: 'EUR', currencySymbol: '€' }
 ];
 
 const DEFAULT_LOCATION = {
@@ -486,7 +486,7 @@ export const LocationProvider = ({ children }) => {
     );
 
     const countryKey = targetCountry?.countryName || countryName || 'India';
-    const countryMeta = COUNTRY_CURRENCY_MAP[countryKey] || (countryKey.toLowerCase().includes('india') ? COUNTRY_CURRENCY_MAP['India'] : COUNTRY_CURRENCY_MAP['United States']);
+    const countryMeta = COUNTRY_CURRENCY_MAP[countryKey] || ((countryKey || '').toLowerCase().includes('india') ? COUNTRY_CURRENCY_MAP['India'] : COUNTRY_CURRENCY_MAP['United States']);
     const currency = targetCountry?.currency || countryMeta?.currency || (countryKey === 'India' ? 'INR' : 'USD');
     const currencySymbol = targetCountry?.currencySymbol || countryMeta?.symbol || (currency === 'INR' ? '₹' : '$');
 
@@ -555,7 +555,7 @@ export const LocationProvider = ({ children }) => {
   const syncWithUserLocation = (userLoc) => {
     if (!userLoc || !userLoc.country) return;
     const countryKey = userLoc.country;
-    const countryMeta = COUNTRY_CURRENCY_MAP[countryKey] || (countryKey.toLowerCase().includes('india') ? COUNTRY_CURRENCY_MAP['India'] : COUNTRY_CURRENCY_MAP['United States']);
+    const countryMeta = COUNTRY_CURRENCY_MAP[countryKey] || ((countryKey || '').toLowerCase().includes('india') ? COUNTRY_CURRENCY_MAP['India'] : COUNTRY_CURRENCY_MAP['United States']);
     const currency = userLoc.currency || countryMeta?.currency || (countryKey === 'India' ? 'INR' : 'USD');
     const currencySymbol = userLoc.currencySymbol || countryMeta?.symbol || (currency === 'INR' ? '₹' : '$');
 

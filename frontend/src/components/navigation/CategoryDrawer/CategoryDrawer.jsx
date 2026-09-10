@@ -181,9 +181,9 @@ export function CategoryDrawer({ isOpen, onClose }) {
     navigate(path);
   };
 
-  const filteredCategories = activeFilter === 'all'
+  const filteredCategories = !activeFilter || activeFilter === 'all'
     ? categories
-    : categories.filter((c) => c.tag.toLowerCase() === activeFilter.toLowerCase());
+    : categories.filter((c) => (c?.tag || '').toLowerCase() === (activeFilter || '').toLowerCase());
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-label="Marketplace categories mega menu">

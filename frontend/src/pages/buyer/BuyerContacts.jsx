@@ -32,9 +32,10 @@ export function BuyerContacts() {
   const currentUserId = user?._id?.toString() || user?.id?.toString();
 
   const filteredConversations = useMemo(() => {
-    if (!searchTerm.trim()) return conversations;
-    const term = searchTerm.toLowerCase();
-    return conversations.filter(conv => {
+    const term = (searchTerm || '').trim().toLowerCase();
+    if (!term) return conversations;
+    return (conversations || []).filter(conv => {
+      if (!conv) return false;
       const otherUser = conv.participants?.find(p => {
         const pId = p?._id?.toString() || p?.id?.toString();
         return pId && pId !== currentUserId;

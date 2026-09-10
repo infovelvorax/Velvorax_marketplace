@@ -55,23 +55,30 @@ export function LocationSelector({ isOpen, onClose, onSelect, title = "Select Gl
 
   // Fallback popular cities if API is still loading
   const popularCities = contextPopularCities.length > 0 ? contextPopularCities : [
-    { cityName: 'Dubai', countryName: 'United Arab Emirates', regionName: 'Dubai', currency: 'AED', currencySymbol: 'AED' },
-    { cityName: 'London', countryName: 'United Kingdom', regionName: 'England', currency: 'GBP', currencySymbol: '£' },
-    { cityName: 'New York City', countryName: 'United States', regionName: 'New York', currency: 'USD', currencySymbol: '$' },
-    { cityName: 'San Francisco', countryName: 'United States', regionName: 'California', currency: 'USD', currencySymbol: '$' },
-    { cityName: 'Bengaluru', countryName: 'India', regionName: 'Karnataka', currency: 'INR', currencySymbol: '₹' },
-    { cityName: 'Chennai', countryName: 'India', regionName: 'Tamil Nadu', currency: 'INR', currencySymbol: '₹' },
-    { cityName: 'Mumbai', countryName: 'India', regionName: 'Maharashtra', currency: 'INR', currencySymbol: '₹' },
-    { cityName: 'Hyderabad', countryName: 'India', regionName: 'Telangana', currency: 'INR', currencySymbol: '₹' },
-    { cityName: 'New Delhi', countryName: 'India', regionName: 'Delhi NCR', currency: 'INR', currencySymbol: '₹' }
+    { cityName: 'Dubai', name: 'Dubai', countryName: 'United Arab Emirates', country: 'United Arab Emirates', regionName: 'Dubai', region: 'Dubai', currency: 'AED', currencySymbol: 'AED' },
+    { cityName: 'London', name: 'London', countryName: 'United Kingdom', country: 'United Kingdom', regionName: 'England', region: 'England', currency: 'GBP', currencySymbol: '£' },
+    { cityName: 'New York City', name: 'New York City', countryName: 'United States', country: 'United States', regionName: 'New York', region: 'New York', currency: 'USD', currencySymbol: '$' },
+    { cityName: 'San Francisco', name: 'San Francisco', countryName: 'United States', country: 'United States', regionName: 'California', region: 'California', currency: 'USD', currencySymbol: '$' },
+    { cityName: 'Bengaluru', name: 'Bengaluru', countryName: 'India', country: 'India', regionName: 'Karnataka', region: 'Karnataka', currency: 'INR', currencySymbol: '₹' },
+    { cityName: 'Chennai', name: 'Chennai', countryName: 'India', country: 'India', regionName: 'Tamil Nadu', region: 'Tamil Nadu', currency: 'INR', currencySymbol: '₹' },
+    { cityName: 'Mumbai', name: 'Mumbai', countryName: 'India', country: 'India', regionName: 'Maharashtra', region: 'Maharashtra', currency: 'INR', currencySymbol: '₹' },
+    { cityName: 'Hyderabad', name: 'Hyderabad', countryName: 'India', country: 'India', regionName: 'Telangana', region: 'Telangana', currency: 'INR', currencySymbol: '₹' },
+    { cityName: 'New Delhi', name: 'New Delhi', countryName: 'India', country: 'India', regionName: 'Delhi NCR', region: 'Delhi NCR', currency: 'INR', currencySymbol: '₹' }
   ];
 
   // Filtered popular cities when user searches
-  const filteredPopular = popularCities.filter(c => 
-    c.cityName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.countryName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (c.regionName && c.regionName.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const filteredPopular = popularCities.filter(c => {
+    const cityName = c?.cityName || c?.name || c?.city || '';
+    const countryName = c?.countryName || c?.country || '';
+    const regionName = c?.regionName || c?.region || '';
+    const query = (searchQuery || '').toLowerCase().trim();
+    if (!query) return true;
+    return (
+      cityName.toLowerCase().includes(query) ||
+      countryName.toLowerCase().includes(query) ||
+      (regionName && regionName.toLowerCase().includes(query))
+    );
+  });
 
   // Country change handler (cascading resets)
   const handleCountryChange = (countryName) => {
@@ -117,14 +124,17 @@ export function LocationSelector({ isOpen, onClose, onSelect, title = "Select Gl
 
   // Select a popular city with 1 click
   const handleSelectPopularCity = (pc) => {
-    const countryObj = locations.find(l => l.countryName === pc.countryName);
+    const cityName = pc?.cityName || pc?.name || pc?.city || '';
+    const countryName = pc?.countryName || pc?.country || '';
+    const regionName = pc?.regionName || pc?.region || '';
+    const countryObj = locations.find(l => l.countryName === countryName);
     const updated = {
-      country: pc.countryName,
-      countryCode: countryObj?.countryCode || pc.countryCode || 'IN',
-      currency: countryObj?.currency || pc.currency || 'USD',
-      currencySymbol: countryObj?.currencySymbol || pc.currencySymbol || '$',
-      region: pc.regionName || '',
-      city: pc.cityName,
+      country: countryName,
+      countryCode: countryObj?.countryCode || pc?.countryCode || 'IN',
+      currency: countryObj?.currency || pc?.currency || 'USD',
+      currencySymbol: countryObj?.currencySymbol || pc?.currencySymbol || '$',
+      region: regionName,
+      city: cityName,
       localArea: ''
     };
     setLocation(updated);
@@ -272,7 +282,10 @@ export function LocationSelector({ isOpen, onClose, onSelect, title = "Select Gl
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
                   {filteredPopular.map((pc, idx) => {
-                    const isSelected = selectedLocation?.city === pc.cityName;
+                    const cityName = pc?.cityName || pc?.name || pc?.city || '';
+                    const countryName = pc?.countryName || pc?.country || '';
+                    const regionName = pc?.regionName || pc?.region || '';
+                    const isSelected = selectedLocation?.city === cityName;
                     return (
                       <button
                         key={idx}
@@ -287,20 +300,20 @@ export function LocationSelector({ isOpen, onClose, onSelect, title = "Select Gl
                       >
                         <div className="min-w-0">
                           <div className="text-[14px] font-bold truncate group-hover:translate-x-0.5 transition-transform">
-                            {pc.cityName}
+                            {cityName}
                           </div>
                           <div className={cn(
                             "text-[11px] truncate font-medium",
                             isSelected ? "opacity-90" : "text-[var(--text-secondary)]"
                           )}>
-                            {pc.regionName ? `${pc.regionName}, ` : ''}{pc.countryName}
+                            {regionName ? `${regionName}, ` : ''}{countryName}
                           </div>
                         </div>
                         <span className={cn(
                           "text-xs px-2 py-0.5 rounded-md font-bold uppercase shrink-0",
                           isSelected ? "bg-white/20 text-white" : "bg-[var(--bg-secondary)] text-[var(--text-secondary)]"
                         )}>
-                          {pc.currencySymbol || '$'}
+                          {pc?.currencySymbol || '$'}
                         </span>
                       </button>
                     );

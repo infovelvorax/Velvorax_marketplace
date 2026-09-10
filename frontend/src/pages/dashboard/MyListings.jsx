@@ -53,6 +53,7 @@ export function MyListings() {
   };
 
   const filteredListings = listings.filter((item) => {
+    if (!item) return false;
     const matchesStatus =
       statusFilter === 'ALL'
         ? true
@@ -60,10 +61,11 @@ export function MyListings() {
         ? ['PENDING', 'PENDING_REVIEW', 'UNDER_REVIEW'].includes(item.status)
         : item.status === statusFilter;
 
+    const q = (searchQuery || '').trim().toLowerCase();
     const matchesSearch =
-      searchQuery.trim() === '' ||
-      item.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.location?.city?.toLowerCase().includes(searchQuery.toLowerCase());
+      !q ||
+      item.title?.toLowerCase().includes(q) ||
+      item.location?.city?.toLowerCase().includes(q);
 
     return matchesStatus && matchesSearch;
   });

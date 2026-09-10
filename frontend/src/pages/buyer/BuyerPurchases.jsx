@@ -29,7 +29,8 @@ export function BuyerPurchases() {
   }, [fetchPurchases]);
 
   const filteredPurchases = purchases.filter((item) => {
-    const q = searchQuery.toLowerCase().trim();
+    if (!item) return false;
+    const q = (searchQuery || '').toLowerCase().trim();
     if (!q) return true;
     return (
       item.orderNumber?.toString().toLowerCase().includes(q) ||

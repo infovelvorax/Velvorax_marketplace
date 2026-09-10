@@ -292,10 +292,10 @@ export const Jobs = () => {
             <button
               key={wm}
               type="button"
-              onClick={() => setFilter('workMode', workMode === wm.toLowerCase() ? '' : wm.toLowerCase())}
+              onClick={() => setFilter('workMode', (workMode || '').toLowerCase() === (wm || '').toLowerCase() ? '' : (wm || '').toLowerCase())}
               className={cn(
                 "px-2 py-1.5 rounded-lg text-xs font-bold border transition-all cursor-pointer text-center",
-                workMode === wm.toLowerCase()
+                (workMode || '').toLowerCase() === (wm || '').toLowerCase()
                   ? "bg-[var(--button-primary)] text-[var(--button-primary-text)] border-[var(--button-primary)]"
                   : "bg-[var(--bg-secondary)] text-[var(--text-secondary)] border-[var(--border-subtle)]"
               )}

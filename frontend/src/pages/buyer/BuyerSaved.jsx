@@ -38,12 +38,13 @@ export function BuyerSaved() {
   };
 
   const filteredFavorites = favorites.filter((fav) => {
-    const item = fav.listingId || fav;
+    const item = fav?.listingId || fav;
     if (!item || !item.title) return false;
+    const q = (searchQuery || '').trim().toLowerCase();
     return (
-      searchQuery.trim() === '' ||
-      item.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.location?.city?.toLowerCase().includes(searchQuery.toLowerCase())
+      !q ||
+      item.title?.toLowerCase().includes(q) ||
+      item.location?.city?.toLowerCase().includes(q)
     );
   });
 
